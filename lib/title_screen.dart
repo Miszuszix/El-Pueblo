@@ -2,8 +2,6 @@ import 'package:el_pueblo/players_names_screen.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
-import 'players_names_screen.dart';
-
 class TitleScreen extends StatelessWidget {
   const TitleScreen({super.key});
 

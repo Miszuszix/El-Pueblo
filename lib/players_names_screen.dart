@@ -10,8 +10,7 @@ class PlayersNamesScreen extends StatefulWidget {
 class _PlayersNamesScreenState extends State<PlayersNamesScreen> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         body: Center(
           child: Column(
             children: [
@@ -22,7 +21,6 @@ class _PlayersNamesScreenState extends State<PlayersNamesScreen> {
             ],
           ),
         ),
-      ),
     );
   }
 }

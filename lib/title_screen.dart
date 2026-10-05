@@ -8,42 +8,63 @@ class TitleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ButtonStyle style = ElevatedButton.styleFrom(
-      textStyle: TextStyle(fontSize: 30),
+      backgroundColor: Colors.red[800],
+      foregroundColor: Colors.white,
+      textStyle: const TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 2,
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 18),
+      minimumSize: const Size(220, 60),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      elevation: 6,
     );
-    return MaterialApp(
-      home: Scaffold(
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF1E1E1E),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-                "EL PUEBLO",
+            const Text(
+              "EL PUEBLO",
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 50
+                color: Colors.amber,
+                fontWeight: FontWeight.w900,
+                fontSize: 55,
+                letterSpacing: 5,
+                shadows: [
+                  Shadow(
+                    color: Colors.black,
+                    offset: Offset(3, 4),
+                    blurRadius: 5,
+                  )
+                ],
               ),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 80),
             ElevatedButton(
-                onPressed: ()=>Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PlayersNamesScreen()
-                    )
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PlayersNamesScreen(),
                 ),
+              ),
               style: style,
-              child: Text("START"),
+              child: const Text("START"),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-                onPressed: ()=> SystemNavigator.pop(),
-                style: style,
-                child: Text("EXIT")
+              onPressed: () => SystemNavigator.pop(),
+              style: style,
+              child: const Text("EXIT"),
             )
           ],
         ),
-      ),
       ),
     );
   }

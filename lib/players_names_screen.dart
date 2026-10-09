@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'roles_screen.dart';
 
 class PlayersNamesScreen extends StatefulWidget {
   const PlayersNamesScreen({super.key});
@@ -15,6 +16,7 @@ class _PlayersNamesScreenState extends State<PlayersNamesScreen> {
   @override
   void initState() {
     super.initState();
+
     for (var i = 0; i < _initialPlayerCount; i++) {
       _nameControllers.add(TextEditingController());
     }
@@ -25,26 +27,48 @@ class _PlayersNamesScreenState extends State<PlayersNamesScreen> {
     for (final controller in _nameControllers) {
       controller.dispose();
     }
+
     super.dispose();
   }
 
   void _addPlayer() {
-    setState(() => _nameControllers.add(TextEditingController()));
+    setState(() {
+      _nameControllers.add(TextEditingController());
+    });
   }
 
   void _removePlayer(int index) {
     final removed = _nameControllers[index];
-    setState(() => _nameControllers.removeAt(index));
+
+    setState(() {
+      _nameControllers.removeAt(index);
+    });
+
     // Alliberem el controlador un cop la pantalla s'ha redibuixat
-    WidgetsBinding.instance.addPostFrameCallback((_) => removed.dispose());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      removed.dispose();
+    });
+  }
+
+  // Passar a la pantalla de rols
+  void _goToRoles() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const RolesScreen(),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Jugadors')),
+      appBar: AppBar(
+        title: const Text('Jugadors'),
+      ),
+
       body: ListView.builder(
-        // El padding de baix evita que el botó + tapi l'última casella
+        // El padding de baix evita que el botó tapi l'última casella
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 96),
         itemCount: _nameControllers.length,
         itemBuilder: (context, index) => _PlayerCard(
@@ -54,10 +78,31 @@ class _PlayersNamesScreenState extends State<PlayersNamesScreen> {
           onDelete: () => _removePlayer(index),
         ),
       ),
+
+      // Botó + per afegir jugadors
       floatingActionButton: FloatingActionButton(
         onPressed: _addPlayer,
         tooltip: 'Afegir jugador',
         child: const Icon(Icons.add),
+      ),
+
+      // Botó NEXT per passar a RolesScreen
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16),
+        child: SizedBox(
+          width: double.infinity,
+          height: 55,
+          child: ElevatedButton(
+            onPressed: _goToRoles,
+            child: const Text(
+              'NEXT',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -99,6 +144,7 @@ class _PlayerCard extends StatelessWidget {
                 ),
               ],
             ),
+
             Padding(
               padding: const EdgeInsets.only(right: 8),
               child: TextField(

@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'player_roles.dart';
+import 'role_colors.dart';
 
 class RolesScreen extends StatefulWidget {
   const RolesScreen({super.key, required this.playerNames});
@@ -136,10 +137,10 @@ class _RoleCard extends StatelessWidget {
               height: 90,
 
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: roleColor(roleName),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: Colors.grey,
+                  color: Color.lerp(roleColor(roleName), Colors.black, 0.15)!,
                   width: 2,
                 ),
               ),

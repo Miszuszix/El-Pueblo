@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-
+import 'role_colors.dart';
 import 'package:material_ui/material_ui.dart';
 
 class RoleRevealScreen extends StatefulWidget {
@@ -164,15 +164,8 @@ class _FlipCard extends StatelessWidget {
     required this.role,
   });
 
-  // TODO: canvia aquests camins quan tinguis les imatges
-  // (i recorda declarar-les a pubspec.yaml)
-  static const String _backImagePath = 'assets/images/card_back.png';
-
   final bool revealed;
   final String role;
-
-  String get _frontImagePath =>
-      'assets/images/roles/${role.toLowerCase()}.png';
 
   @override
   Widget build(BuildContext context) {
@@ -194,66 +187,95 @@ class _FlipCard extends StatelessWidget {
               ? Transform(
             alignment: Alignment.center,
             transform: Matrix4.identity()..rotateY(math.pi),
-            child: _CardFace(
-              imagePath: _frontImagePath,
-              fallbackIcon: Icons.style,
-              fallbackText: role,
-              fallbackColor: Colors.amber[200]!,
-            ),
+            child: _CardFront(role: role),
           )
-              : _CardFace(
-            imagePath: _backImagePath,
-            fallbackIcon: Icons.help_outline,
-            fallbackText: '?',
-            fallbackColor: Colors.red[800]!,
-          ),
+              : const _CardBack(),
         );
       },
     );
   }
 }
 
-/// Una cara de la carta. Si la imatge encara no existeix, mostra un marcador.
-class _CardFace extends StatelessWidget {
-  const _CardFace({
-    required this.imagePath,
-    required this.fallbackIcon,
-    required this.fallbackText,
-    required this.fallbackColor,
-  });
-
-  final String imagePath;
-  final IconData fallbackIcon;
-  final String fallbackText;
-  final Color fallbackColor;
+/// Revers de la carta (vermell amb un "?")
+class _CardBack extends StatelessWidget {
+  const _CardBack();
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: Image.asset(
-        imagePath,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => Container(
-          color: fallbackColor,
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(fallbackIcon, size: 80, color: Colors.white),
-              const SizedBox(height: 12),
-              Text(
-                fallbackText,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.red[800],
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.red[900]!, width: 3),
+      ),
+      alignment: Alignment.center,
+      child: const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.help_outline, size: 80, color: Colors.white),
+          SizedBox(height: 12),
+          Text(
+            '?',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Cara frontal: color pastel + símbol del rol + nom
+class _CardFront extends StatelessWidget {
+  const _CardFront({required this.role});
+
+  final String role;
+
+
+  @override
+  Widget build(BuildContext context) {
+    final key = role.toLowerCase();
+    final background = roleColor(role);
+    final border = Color.lerp(background, Colors.black, 0.15)!;
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: border, width: 3),
+      ),
+      child: Column(
+        children: [
+          // Símbol del rol (mateixa carpeta d'icones que la pantalla de rols)
+          Expanded(
+            child: Image.asset(
+              'assets/images/icons/$key.png',
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => const Center(
+                child: Icon(Icons.style, size: 80, color: Colors.black38),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          // Nom del rol
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              role,
+              style: const TextStyle(
+                color: Color(0xFF3A3A3A),
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -66,7 +66,7 @@ class _RoleRevealScreenState extends State<RoleRevealScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Jugador ${_currentIndex + 1} / ${widget.playerNames.length}'),
-        automaticallyImplyLeading: false,
+        centerTitle: true,
       ),
       body: SafeArea(
         child: Padding(

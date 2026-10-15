@@ -52,10 +52,17 @@ class _PlayersNamesScreenState extends State<PlayersNamesScreen> {
 
   // Passar a la pantalla de rols
   void _goToRoles() {
+    final names = [
+      for (var i = 0; i < _nameControllers.length; i++)
+        _nameControllers[i].text.trim().isEmpty
+            ? 'Player ${i + 1}'
+            : _nameControllers[i].text.trim(),
+    ];
+
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const RolesScreen(),
+        builder: (context) => RolesScreen(playerNames: names),
       ),
     );
   }

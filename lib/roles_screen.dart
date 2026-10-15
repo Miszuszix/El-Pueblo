@@ -1,7 +1,10 @@
 import 'package:material_ui/material_ui.dart';
+import 'player_roles.dart';
 
 class RolesScreen extends StatefulWidget {
-  const RolesScreen({super.key});
+  const RolesScreen({super.key, required this.playerNames});
+
+  final List<String> playerNames;
 
   @override
   State<RolesScreen> createState() => _RolesScreenState();
@@ -55,13 +58,51 @@ class _RolesScreenState extends State<RolesScreen> {
 
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Aquí posteriormente iremos a la siguiente pantalla.
+          _goToReveal();
         },
         label: const Text('NEXT'),
         icon: const Icon(Icons.arrow_forward),
       ),
     );
   }
+
+  //Funcio per passar a revelar rols
+  void _goToReveal() {
+    final players = widget.playerNames.length;
+    final total = _quantities.fold<int>(0, (a, b) => a + b);
+
+    if (total > players) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Has triat $total rols però només hi ha $players jugadors'),
+        ),
+      );
+      return;
+    }
+
+    final deck = <String>[];
+    for (var i = 0; i < _roles.length; i++) {
+      for (var j = 0; j < _quantities[i]; j++) {
+        deck.add(_roles[i]);
+      }
+    }
+    while (deck.length < players) {
+      deck.add('Villager'); // Els que no tenen rol especial són vilatans
+    }
+    deck.shuffle();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RoleRevealScreen(
+          playerNames: widget.playerNames,
+          assignedRoles: deck,
+        ),
+      ),
+    );
+  }
+
+
 }
 
 

@@ -10,6 +10,7 @@ class PlayersNamesScreen extends StatefulWidget {
 
 class _PlayersNamesScreenState extends State<PlayersNamesScreen> {
   static const int _initialPlayerCount = 5;
+  static const int _minPlayers = 5;
 
   final List<TextEditingController> _nameControllers = [];
 
@@ -38,6 +39,7 @@ class _PlayersNamesScreenState extends State<PlayersNamesScreen> {
   }
 
   void _removePlayer(int index) {
+    if (_nameControllers.length <= _minPlayers) return;
     final removed = _nameControllers[index];
 
     setState(() {

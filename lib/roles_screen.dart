@@ -20,7 +20,9 @@ class _RolesScreenState extends State<RolesScreen> {
     'Seer',
   ];
 
-  final List<int> _quantities = [0, 0, 0, 0, 0];
+  int _minQuantity(int index) => _roles[index] == 'Werewolf' ? 1 : 0;
+
+  late final List<int> _quantities = List.generate(_roles.length, _minQuantity);
 
   void _increaseRole(int index) {
     setState(() {
@@ -29,7 +31,7 @@ class _RolesScreenState extends State<RolesScreen> {
   }
 
   void _decreaseRole(int index) {
-    if (_quantities[index] > 0) {
+    if (_quantities[index] > _minQuantity(index)) {
       setState(() {
         _quantities[index]--;
       });

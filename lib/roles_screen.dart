@@ -144,10 +144,18 @@ class _RoleCard extends StatelessWidget {
                 ),
               ),
 
-              child: const Icon(
-                Icons.image,
-                size: 40,
-                color: Colors.grey,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  'assets/images/icons/${roleName.toLowerCase()}.png',
+                  fit: BoxFit.cover,
+                  // Si la imagen no existe, se ve el icono gris de antes
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.image,
+                    size: 40,
+                    color: Colors.grey,
+                  ),
+                ),
               ),
             ),
 

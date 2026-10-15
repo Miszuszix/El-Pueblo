@@ -25,6 +25,11 @@ class _RolesScreenState extends State<RolesScreen> {
   late final List<int> _quantities = List.generate(_roles.length, _minQuantity);
 
   void _increaseRole(int index) {
+    final total = _quantities.fold<int>(0, (a, b) => a + b);
+
+    // No es pot superar el nombre de jugadors
+    if (total >= widget.playerNames.length) return;
+
     setState(() {
       _quantities[index]++;
     });

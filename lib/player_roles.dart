@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'role_colors.dart';
 import 'package:material_ui/material_ui.dart';
+import 'game_screen.dart';
 
 class RoleRevealScreen extends StatefulWidget {
   const RoleRevealScreen({
@@ -55,7 +56,15 @@ class _RoleRevealScreenState extends State<RoleRevealScreen> {
 
   // Aquí anirem a la següent pestanya del joc
   void _goToNextScreen() {
-    // TODO: Navigator.push(...) cap a la pantalla següent
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GameScreen(
+          playerNames: widget.playerNames,
+          assignedRoles: widget.assignedRoles,
+        ),
+      ),
+    );
   }
 
   @override
